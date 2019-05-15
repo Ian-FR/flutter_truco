@@ -4,9 +4,15 @@ abstract class GameEvent extends Equatable {
   GameEvent([List props = const []]) : super(props);
 }
 
-class NewGame extends GameEvent {}
+class NewGame extends GameEvent {
+  @override
+  String toString() => 'NewGame';
+}
 
-class BackMatch extends GameEvent {}
+class BackMatch extends GameEvent {
+  @override
+  String toString() => 'BackMatch';
+}
 
 class OurMoreOne extends GameEvent {
   @override

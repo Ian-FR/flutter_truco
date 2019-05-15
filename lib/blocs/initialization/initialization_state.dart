@@ -18,7 +18,7 @@ class InitializationState {
     );
   }
 
-   factory InitializationState.progressing(int progress) {
+  factory InitializationState.progressing(int progress) {
     return InitializationState(
       initialized: progress == 100,
       initializing: true,
@@ -26,7 +26,7 @@ class InitializationState {
     );
   }
 
-   factory InitializationState.initialized() {
+  factory InitializationState.initialized() {
     return InitializationState(
       initialized: true,
       progress: 100,

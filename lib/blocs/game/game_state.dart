@@ -1,10 +1,12 @@
 import 'package:meta/meta.dart';
 
 class GameState {
-  final int ourPoint;
+  
   final List<int> ourPoints;
-  final int theyPoint;
   final List<int> theyPoints;
+  final int ourPoint;
+  final int theyPoint;
+  
   GameState({
     @required this.ourPoints,
     @required this.theyPoints,
@@ -18,7 +20,17 @@ class GameState {
       theyPoints: [],
       ourPoint: 0,
       theyPoint: 0,
-      // matches: [{'ourPoint': 0, 'theyPoint' : 0}],
     );
   }
+
+  // @override
+  // String toString() {
+  //   return '''GamState {
+  //     ourPoints: $ourPoints,
+  //     theyPoints: $theyPoints,
+  //     ourPoint: $ourPoint,
+  //     theyPoint: $theyPoint,
+  //   }''';
+  // }
+
 }

@@ -12,9 +12,11 @@ class InitializationBloc
   Stream<InitializationState> mapEventToState(
     InitializationEvent event,
   ) async* {
+    
     if (!currentState.initialized) {
       yield InitializationState.notInitialized();
     }
+
     if (event is AppStart) {
       for (int progress = 0; progress < 101; progress += 10) {
         await Future.delayed(const Duration(milliseconds: 100));

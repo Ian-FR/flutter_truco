@@ -16,7 +16,7 @@ The Truco application project was developed for learn and practice the new techn
 
 - Architecture: [Bloc](https://felangel.github.io/bloc/#/)
 
-- Libs: [flutter_bloc](https://pub.dev/packages/flutter_bloc)
+- Libs: [flutter_bloc](https://pub.dev/packages/flutter_bloc), [equatable](https://pub.dev/packages/equatable)
 
 
 ## Tutorial
