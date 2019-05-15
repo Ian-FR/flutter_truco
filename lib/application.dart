@@ -6,6 +6,7 @@ class Application extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Truco!',
       theme: ThemeData(primarySwatch: Colors.green),
       home: InitializationScreen(), // Route named '/'
