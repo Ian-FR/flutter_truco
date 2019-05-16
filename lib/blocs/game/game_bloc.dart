@@ -17,28 +17,28 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       yield* _backMatch();
     }
     if (event is OurMoreOne) {
-      yield* _ourMoreOne();
-    }
-    if (event is TheyMoreOne) {
-      yield* _theyMoreOne();
+      yield* _ourAdd(currentState, 1);
     }
     if (event is OurMoreThree) {
-      yield* _ourMoreThree();
-    }
-    if (event is TheyMoreThree) {
-      yield* _theyMoreThree();
+      yield* _ourAdd(currentState, 3);
     }
     if (event is OurMoreSix) {
-      yield* _ourMoreSix();
-    }
-    if (event is TheyMoreSix) {
-      yield* _theyMoreSix();
+      yield* _ourAdd(currentState, 6);
     }
     if (event is OurMoreNine) {
-      yield* _ourMoreNine();
+      yield* _ourAdd(currentState, 9);
+    }
+    if (event is TheyMoreOne) {
+      yield* _theyAdd(currentState, 1);
+    }
+    if (event is TheyMoreThree) {
+      yield* _theyAdd(currentState, 3);
+    }
+    if (event is TheyMoreSix) {
+      yield* _theyAdd(currentState, 6);
     }
     if (event is TheyMoreNine) {
-      yield* _theyMoreNine();
+      yield* _theyAdd(currentState, 9);
     }
   }
 
@@ -60,38 +60,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     );
   }
 
-  Stream<GameState> _ourMoreOne() async* {
-    yield* _ourAdd(currentState, 1);
-  }
-
-  Stream<GameState> _theyMoreOne() async* {
-    yield* _theyAdd(currentState, 1);
-  }
-
-  Stream<GameState> _ourMoreThree() async* {
-    yield* _ourAdd(currentState, 3);
-  }
-
-  Stream<GameState> _theyMoreThree() async* {
-    yield* _theyAdd(currentState, 3);
-  }
-
-  Stream<GameState> _ourMoreSix() async* {
-    yield* _ourAdd(currentState, 6);
-  }
-
-  Stream<GameState> _theyMoreSix() async* {
-    yield* _theyAdd(currentState, 6);
-  }
-  
-  Stream<GameState> _ourMoreNine() async* {
-    yield* _ourAdd(currentState, 9);
-  }
-
-  Stream<GameState> _theyMoreNine() async* {
-    yield* _theyAdd(currentState, 9);
-  }
-
   Stream<GameState> _theyAdd(GameState state, int point) async* {
     
     int ourPoint = state.ourPoint;
@@ -101,7 +69,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     
     ourPoints.add(ourPoint ?? 0);
     theyPoints.add(theyPoint ?? 0);
-    
+
     yield GameState(
       ourPoints: ourPoints,
       theyPoints: theyPoints,
