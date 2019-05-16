@@ -44,18 +44,7 @@ class _GameScrenState extends State<GameScreen>{
                   children: <Widget>[
                     Expanded(
                       child: Center(
-                        child: BlocBuilder<GameEvent, GameState>(
-                          bloc: bloc,
-                          builder: (BuildContext context, GameState state) {
-                            return Text(
-                              state.ourPoint.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 74.0,
-                              ),
-                            );
-                          },
-                        ),
+                        child: _ourPoint(),
                       ),
                     ),
                     Center(child: Text('x', style: TextStyle(
@@ -64,18 +53,7 @@ class _GameScrenState extends State<GameScreen>{
                     ),),),
                     Expanded(
                       child: Center(
-                        child: BlocBuilder<GameEvent, GameState>(
-                          bloc: bloc,
-                          builder: (BuildContext context, GameState state) {
-                            return Text(
-                              state.theyPoint.toString(),
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 74.0,
-                              ),
-                            );
-                          },
-                        ),
+                        child: _theyPoint(),
                       ),
                     ),
                   ],
@@ -144,6 +122,36 @@ class _GameScrenState extends State<GameScreen>{
           ),
         ),
       ),
+    );
+  }
+
+  Widget _ourPoint() {
+    return BlocBuilder<GameEvent, GameState>(
+      bloc: bloc,
+      builder: (BuildContext context, GameState state) {
+        return Text(
+          state.ourPoint.toString(),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 74.0,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _theyPoint() {
+    return BlocBuilder<GameEvent, GameState>(
+      bloc: bloc,
+      builder: (BuildContext context, GameState state) {
+        return Text(
+          state.theyPoint.toString(),
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 74.0,
+          ),
+        );
+      },
     );
   }
 
