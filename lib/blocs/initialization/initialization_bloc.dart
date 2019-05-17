@@ -18,7 +18,7 @@ class InitializationBloc
     }
 
     if (event is AppStart) {
-      for (int progress = 0; progress < 101; progress += 10) {
+      for (double progress = 0; progress < 101; progress += 10) {
         await Future.delayed(const Duration(milliseconds: 100));
         yield InitializationState.progressing(progress);
       }

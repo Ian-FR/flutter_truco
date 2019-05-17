@@ -44,13 +44,17 @@ class GameBloc extends Bloc<GameEvent, GameState> {
 
   Stream<GameState> _backMatch() async* {
     
-    int ourPoint = currentState.ourPoints[currentState.ourPoints.length - 1];
-    int theyPoint = currentState.theyPoints[currentState.theyPoints.length - 1];
+    int ourPoint;
+    int theyPoint;
+
+    ourPoint = currentState.ourPoints.length == 0 ? 0 : currentState.ourPoints[currentState.ourPoints.length - 1];
+    theyPoint = currentState.theyPoints.length == 0 ? 0 : currentState.theyPoints[currentState.theyPoints.length - 1];
+
     List<int> ourPoints = currentState.ourPoints;
     List<int> theyPoints = currentState.theyPoints;
     
-    ourPoints.removeLast();
-    theyPoints.removeLast();
+    if (ourPoints.length > 0) ourPoints.removeLast();
+    if (theyPoints.length > 0) theyPoints.removeLast();
 
     yield GameState(
       ourPoints: ourPoints,
@@ -64,11 +68,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     
     int ourPoint = state.ourPoint;
     int theyPoint = state.theyPoint;
-    List<int> ourPoints = state.ourPoints ?? [0];
-    List<int> theyPoints = state.theyPoints ?? [0];
     
-    ourPoints.add(ourPoint ?? 0);
-    theyPoints.add(theyPoint ?? 0);
+    List<int> ourPoints = state.ourPoints;
+    List<int> theyPoints = state.theyPoints;
+    
+    ourPoints.add(ourPoint);
+    theyPoints.add(theyPoint);
 
     yield GameState(
       ourPoints: ourPoints,
@@ -82,11 +87,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     
     int ourPoint = state.ourPoint;
     int theyPoint = state.theyPoint;
-    List<int> ourPoints = state.ourPoints ?? [0];
-    List<int> theyPoints = state.theyPoints ?? [0];
+
+    List<int> ourPoints = state.ourPoints;
+    List<int> theyPoints = state.theyPoints;
     
-    ourPoints.add(ourPoint ?? 0);
-    theyPoints.add(theyPoint ?? 0);
+    ourPoints.add(ourPoint);
+    theyPoints.add(theyPoint);
     
     yield GameState(
       ourPoints: ourPoints,

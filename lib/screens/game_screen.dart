@@ -34,88 +34,62 @@ class _GameScrenState extends State<GameScreen>{
           ),
         ),
         body: Container(
-          color: Colors.green,
+          color: Colors.green[600],
           child: Column(
             children: <Widget>[
               
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Expanded(
-                      child: Center(
-                        child: _ourPoint(),
-                      ),
-                    ),
-                    Center(child: Text('x', style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 72.0,
-                    ),),),
-                    Expanded(
-                      child: Center(
-                        child: _theyPoint(),
-                      ),
-                    ),
+                    
+                    _ourPoint(),
+                    
+                    Center(child: Text('x', style: TextStyle(color: Colors.white, fontSize: 72.0),),),
+                    
+                    _theyPoint(),
                   ],
                 ),
               ),
 
               Expanded(
-                child: Center(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       
                       _ourButtons(),
 
-                      Expanded(
-                        child: Column(
-                          children: <Widget>[
-                            Text('Partidas', style: TextStyle(color: Colors.white70),),
-                            BlocBuilder<GameEvent, GameState>(
-                              bloc: bloc,
-                              builder: (BuildContext context, GameState state) {
-                                return _matches(state.ourPoints, state.theyPoints);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                      _matches(bloc),
 
                       _theyButtons(),
 
                     ],
                   ),
-                ),
               ),
 
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: RaisedButton(
-                        onPressed: () => bloc.dispatch(NewGame()),
-                        child: Text('Novo Jogo'),
-                      ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () => bloc.dispatch(NewGame()),
+                      child: Text('Novo Jogo'),
                     ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: RaisedButton(
-                        onPressed: () => bloc.dispatch(BackMatch()),
-                        child: Text('Voltar Jogada'),
-                      ),
+                    RaisedButton(
+                      onPressed: () => bloc.dispatch(BackMatch()),
+                      child: Text('Voltar Jogada'),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
 
               Container(
                 margin: EdgeInsets.only(top: 40),
                 padding: const EdgeInsets.only(top: 20),
                 height: 90,
-                child: Text('...')
+                child: Text('...'),
               ),
             
             ],
@@ -155,42 +129,23 @@ class _GameScrenState extends State<GameScreen>{
     );
   }
 
+  Widget _button(String title, GameEvent event) {
+    return FloatingActionButton(
+      heroTag: null,
+      onPressed: () => bloc.dispatch(event),
+      child: Text(title, style: TextStyle(fontSize: 18),),
+    );
+  }
+
   Widget _ourButtons() {
     return Expanded(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(OurMoreOne()),
-              child: Text('+1', style: TextStyle(fontSize: 18),),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(OurMoreThree()),
-              child: Text('+3', style: TextStyle(fontSize: 18),),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(OurMoreSix()),
-              child: Text('+6', style: TextStyle(fontSize: 18),),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(OurMoreNine()),
-              child: Text('+9', style: TextStyle(fontSize: 18),),
-            ),
-          ),
+          _button('+1', OurMoreOne()),
+          _button('+3', OurMoreThree()),
+          _button('+6', OurMoreSix()),
+          _button('+9', OurMoreNine()),
         ], 
       ),
     );
@@ -199,60 +154,46 @@ class _GameScrenState extends State<GameScreen>{
   Widget _theyButtons() {
     return Expanded(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(TheyMoreOne()),
-              child: Text('+1', style: TextStyle(fontSize: 18),),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(TheyMoreThree()),
-              child: Text('+3', style: TextStyle(fontSize: 18),),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(TheyMoreSix()),
-              child: Text('+6', style: TextStyle(fontSize: 18),),
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.all(8.0),
-            child: FloatingActionButton(
-              heroTag: null,
-              onPressed: () => bloc.dispatch(TheyMoreNine()),
-              child: Text('+9', style: TextStyle(fontSize: 18),),
-            ),
-          ),
+          _button('+1', TheyMoreOne()),
+          _button('+3', TheyMoreThree()),
+          _button('+6', TheyMoreSix()),
+          _button('+9', TheyMoreNine()),
         ], 
       ),
     );
   }
 
-  Widget _matches(List<int> our, List<int> they) {
-    return  Flexible(
-      child: ListView.builder(
-        itemCount: our.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Center(
-            child: Text(
-              '${our[our.length - (index + 1)].toString()}  ${they[they.length - (index + 1)].toString()}',
-              style: TextStyle(
-                color: Colors.white30,
-                fontSize: 42.0,
-              ),
+  Widget _matches(GameBloc bloc) {
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          Text('Partidas', style: TextStyle(color: Colors.white70),),
+          Flexible(
+            child: BlocBuilder<GameEvent, GameState>(
+              bloc: bloc,
+              builder: (BuildContext context, GameState state) {
+                return ListView.builder(
+                  itemCount: state.ourPoints.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Center(
+                      child: Text(
+                        '${state.ourPoints[state.ourPoints.length - (index + 1)].toString()}  ${state.theyPoints[state.theyPoints.length - (index + 1)].toString()}',
+                        style: TextStyle(
+                          color: Colors.white30,
+                          fontSize: 42.0,
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }
             ),
-          );
-        },
+          ),
+        ],
       ),
-    );
+    );    
   }
+
 }

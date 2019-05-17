@@ -42,10 +42,11 @@ class _InitializationScreenState extends State<InitializationScreen>{
                     Navigator.of(context).pushReplacementNamed('/game');
                   });
                 }
-                return Text(
-                  'Inicializando ... ${state.progress}%',
-                  style: TextStyle(color: Colors.white),
-                );
+                return CircularProgressIndicator(backgroundColor: Colors.white);
+                // Text(
+                //   'Inicializando ... ${state.progress}%',
+                //   style: TextStyle(color: Colors.white),
+                // );
               }
             ),
           ),

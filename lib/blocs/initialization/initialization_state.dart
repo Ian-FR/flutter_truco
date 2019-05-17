@@ -4,7 +4,7 @@ class InitializationState {
   
   final bool initialized;
   final bool initializing;
-  final int progress; 
+  final double progress; 
 
   InitializationState({
     @required this.initialized,
@@ -18,7 +18,7 @@ class InitializationState {
     );
   }
 
-  factory InitializationState.progressing(int progress) {
+  factory InitializationState.progressing(double progress) {
     return InitializationState(
       initialized: progress == 100,
       initializing: true,
