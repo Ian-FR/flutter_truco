@@ -40,15 +40,28 @@ class _GameScrenState extends State<GameScreen>{
           color: Colors.green[600],
           child: Column(
             children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+
+                    _ourRounds(),
+                    Text('Rodadas', style: TextStyle(color: Colors.white70),),
+                    _theyRounds(),
+
+                  ],
+                ),
+              ),
               
               Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.only(bottom: 15),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     
                     _ourPoint(),
-                    Text('x', style: TextStyle(color: Colors.white, fontSize: 72.0),),
+                    Text('x', style: TextStyle(color: Colors.white, fontSize: 70.0),),
                     _theyPoint(),
                   
                   ],
@@ -69,7 +82,7 @@ class _GameScrenState extends State<GameScreen>{
               ),
 
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
@@ -91,7 +104,7 @@ class _GameScrenState extends State<GameScreen>{
               Container(
                 margin: EdgeInsets.only(top: 40),
                 padding: const EdgeInsets.only(top: 20),
-                height: 90,
+                height: 60,
                 // child: Text('...'),
               ),
             
@@ -99,6 +112,40 @@ class _GameScrenState extends State<GameScreen>{
           ),
         ),
       ),
+    );
+  }
+
+  Widget _ourRounds() {
+    return BlocBuilder<GameEvent, GameState>(
+      bloc: bloc,
+      builder: (BuildContext context, GameState state) {
+        if (bloc.currentState.ourPoint >= 12) {
+          bloc.dispatch(OurRound());
+        }
+        return Text(
+          state.ourRounds.toString(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _theyRounds() {
+    return BlocBuilder<GameEvent, GameState>(
+      bloc: bloc,
+      builder: (BuildContext context, GameState state) {
+        if (bloc.currentState.theyPoint >= 12) {
+          bloc.dispatch(TheyRound());
+        }
+        return Text(
+          state.theyRounds.toString(),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        );
+      },
     );
   }
 
@@ -110,7 +157,7 @@ class _GameScrenState extends State<GameScreen>{
           state.ourPoint.toString(),
           style: TextStyle(
             color: Colors.white,
-            fontSize: 74.0,
+            fontSize: 100.0,
           ),
         );
       },
@@ -125,7 +172,7 @@ class _GameScrenState extends State<GameScreen>{
           state.theyPoint.toString(),
           style: TextStyle(
             color: Colors.white,
-            fontSize: 74.0,
+            fontSize: 100.0,
           ),
         );
       },

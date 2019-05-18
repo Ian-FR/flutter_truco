@@ -14,6 +14,16 @@ class BackMatch extends GameEvent {
   String toString() => 'BackMatch';
 }
 
+class OurRound extends GameEvent {
+  @override
+  String toString() => 'OurRound';
+}
+
+class TheyRound extends GameEvent {
+  @override
+  String toString() => 'TheyRound';
+}
+
 class OurMoreOne extends GameEvent {
   @override
   String toString() => 'OurMoreOne';

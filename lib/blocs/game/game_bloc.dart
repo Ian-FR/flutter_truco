@@ -16,6 +16,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     if (event is BackMatch) {
       yield* _backMatch();
     }
+    if (event is OurRound) {
+      yield* _ourRound();
+    }
+    if (event is TheyRound) {
+      yield* _theyRound();
+    }
     if (event is OurMoreOne) {
       yield* _ourAdd(currentState, 1);
     }
@@ -42,6 +48,34 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     }
   }
 
+  Stream<GameState> _ourRound() async* {
+    int ourRounds = currentState.ourRounds;
+    int theyRounds = currentState.theyRounds;
+
+    yield GameState(
+      ourPoints: [],
+      theyPoints: [],
+      ourPoint: 0,
+      theyPoint: 0,
+      ourRounds: ourRounds + 1,
+      theyRounds: theyRounds,
+    );
+  }
+
+  Stream<GameState> _theyRound() async* {
+    int ourRounds = currentState.ourRounds;
+    int theyRounds = currentState.theyRounds;
+
+    yield GameState(
+      ourPoints: [],
+      theyPoints: [],
+      ourPoint: 0,
+      theyPoint: 0,
+      ourRounds: ourRounds,
+      theyRounds: theyRounds + 1,
+    );
+  }
+
   Stream<GameState> _backMatch() async* {
     
     int ourPoint;
@@ -61,6 +95,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       theyPoints: theyPoints,
       ourPoint: ourPoint,
       theyPoint: theyPoint,
+      ourRounds: currentState.ourRounds,
+      theyRounds: currentState.theyRounds,
     );
   }
 
@@ -80,6 +116,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       theyPoints: theyPoints,
       ourPoint: ourPoint,
       theyPoint: theyPoint + point,
+      ourRounds: currentState.ourRounds,
+      theyRounds: currentState.theyRounds,
     );
   }
 
@@ -99,6 +137,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       theyPoints: theyPoints,
       ourPoint: ourPoint + point,
       theyPoint: theyPoint,
+      ourRounds: currentState.ourRounds,
+      theyRounds: currentState.theyRounds,
     );
   }
 
