@@ -26,10 +26,13 @@ class _GameScrenState extends State<GameScreen>{
       child: Scaffold(
         appBar: AppBar(
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Expanded(child: Center(child: Text('Nós'))),
-              Center(child: Text('Truco', style: TextStyle(fontSize: 30),)),
-              Expanded(child: Center(child: Text('Eles'))),
+
+              Text('Nós'),
+              Text('Truco', style: TextStyle(fontSize: 30)),
+              Text('Eles'),
+            
             ],
           ),
         ),
@@ -45,10 +48,9 @@ class _GameScrenState extends State<GameScreen>{
                   children: <Widget>[
                     
                     _ourPoint(),
-                    
-                    Center(child: Text('x', style: TextStyle(color: Colors.white, fontSize: 72.0),),),
-                    
+                    Text('x', style: TextStyle(color: Colors.white, fontSize: 72.0),),
                     _theyPoint(),
+                  
                   ],
                 ),
               ),
@@ -59,9 +61,7 @@ class _GameScrenState extends State<GameScreen>{
                     children: <Widget>[
                       
                       _ourButtons(),
-
                       _matches(bloc),
-
                       _theyButtons(),
 
                     ],
@@ -73,14 +73,17 @@ class _GameScrenState extends State<GameScreen>{
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+
                     RaisedButton(
                       onPressed: () => bloc.dispatch(NewGame()),
                       child: Text('Novo Jogo'),
                     ),
+
                     RaisedButton(
                       onPressed: () => bloc.dispatch(BackMatch()),
                       child: Text('Voltar Jogada'),
                     ),
+                  
                   ],
                 ),
               ),
@@ -89,7 +92,7 @@ class _GameScrenState extends State<GameScreen>{
                 margin: EdgeInsets.only(top: 40),
                 padding: const EdgeInsets.only(top: 20),
                 height: 90,
-                child: Text('...'),
+                // child: Text('...'),
               ),
             
             ],
@@ -177,9 +180,13 @@ class _GameScrenState extends State<GameScreen>{
                 return ListView.builder(
                   itemCount: state.ourPoints.length,
                   itemBuilder: (BuildContext context, int index) {
+
+                    int our = state.ourPoints[state.ourPoints.length - (index + 1)];
+                    int they = state.theyPoints[state.theyPoints.length - (index + 1)];
+                    
                     return Center(
                       child: Text(
-                        '${state.ourPoints[state.ourPoints.length - (index + 1)].toString()}  ${state.theyPoints[state.theyPoints.length - (index + 1)].toString()}',
+                        '${our.toString()}  ${they.toString()}',
                         style: TextStyle(
                           color: Colors.white30,
                           fontSize: 42.0,

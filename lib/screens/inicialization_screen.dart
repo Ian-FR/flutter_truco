@@ -29,7 +29,7 @@ class _InitializationScreenState extends State<InitializationScreen>{
     return SafeArea(
       child: Scaffold(
         body: Container(
-          color: Colors.black54,
+          color: Colors.grey[600],
           child: Center(
             child: BlocBuilder<InitializationEvent, InitializationState>(
               bloc: _bloc,
