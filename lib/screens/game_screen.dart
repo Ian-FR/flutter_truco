@@ -36,82 +36,106 @@ class _GameScrenState extends State<GameScreen>{
             ],
           ),
         ),
-        body: Container(
-          color: Colors.green[600],
-          child: Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
+        body: BlocBuilder(
+          bloc: bloc,
+          builder: (BuildContext context, GameState state) {
+            return Container(
+              color: Colors.green[600],
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(top: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
 
-                    _ourRounds(),
-                    Text('Rodadas', style: TextStyle(color: Colors.white70),),
-                    _theyRounds(),
+                        _ourRounds(),
+                        Text('Rodadas', style: TextStyle(color: Colors.white70),),
+                        _theyRounds(),
 
-                  ],
-                ),
-              ),
-              
-              Container(
-                padding: EdgeInsets.only(bottom: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    
-                    _ourPoint(),
-                    Text('x', style: TextStyle(color: Colors.white, fontSize: 70.0),),
-                    _theyPoint(),
-                  
-                  ],
-                ),
-              ),
-
-              Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      
-                      _ourButtons(),
-                      _matches(bloc),
-                      _theyButtons(),
-
-                    ],
+                      ],
+                    ),
                   ),
-              ),
-
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-
-                    RaisedButton(
-                      onPressed: () => bloc.dispatch(NewGame()),
-                      child: Text('Novo Jogo'),
-                    ),
-
-                    RaisedButton(
-                      onPressed: () => bloc.dispatch(BackMatch()),
-                      child: Text('Voltar Jogada'),
-                    ),
                   
-                  ],
-                ),
-              ),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        
+                        _ourPoint(),
+                        Text('x', style: TextStyle(color: Colors.white, fontSize: 70.0),),
+                        _theyPoint(),
+                      
+                      ],
+                    ),
+                  ),
 
-              Container(
-                margin: EdgeInsets.only(top: 40),
-                padding: const EdgeInsets.only(top: 20),
-                height: 60,
-                // child: Text('...'),
+                  Expanded(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          
+                          _ourButtons(),
+                          _matches(bloc),
+                          _theyButtons(),
+
+                        ],
+                      ),
+                  ),
+
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+
+                        RaisedButton(
+                          onPressed: () => bloc.dispatch(NewGame()),
+                          child: Text('Novo Jogo'),
+                        ),
+
+                        RaisedButton(
+                          onPressed: () => bloc.dispatch(BackMatch()),
+                          child: Text('Voltar Jogada'),
+                        ),
+                      
+                      ],
+                    ),
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 40),
+                    padding: const EdgeInsets.only(top: 20),
+                    height: 60,
+                    // child: Text('...'),
+                  ),
+                
+                ],
               ),
-            
-            ],
-          ),
+            );
+          },
         ),
       ),
+    );
+  }
+
+  Future<void> _handlesNewRound() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Título Teste'),
+          content: Text('Body Teste'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Button'),
+              onPressed: () => bloc.dispatch(OurRound()),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -119,9 +143,11 @@ class _GameScrenState extends State<GameScreen>{
     return BlocBuilder<GameEvent, GameState>(
       bloc: bloc,
       builder: (BuildContext context, GameState state) {
+
         if (bloc.currentState.ourPoint >= 12) {
-          bloc.dispatch(OurRound());
+          bloc.dispatch(OurRound());        
         }
+
         return Text(
           state.ourRounds.toString(),
           style: TextStyle(
@@ -136,9 +162,11 @@ class _GameScrenState extends State<GameScreen>{
     return BlocBuilder<GameEvent, GameState>(
       bloc: bloc,
       builder: (BuildContext context, GameState state) {
-        if (bloc.currentState.theyPoint >= 12) {
+
+        if (bloc.currentState.theyPoint >= 12) {      
           bloc.dispatch(TheyRound());
         }
+
         return Text(
           state.theyRounds.toString(),
           style: TextStyle(
