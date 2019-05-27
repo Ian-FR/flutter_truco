@@ -39,6 +39,24 @@ class _GameScrenState extends State<GameScreen>{
         body: BlocBuilder(
           bloc: bloc,
           builder: (BuildContext context, GameState state) {
+
+            if (state.ourPoint >= 12) {
+              
+              bloc.dispatch(OurRound());
+              bloc.dispatch(NewMatch());
+              // WidgetsBinding.instance.addPostFrameCallback((_){
+              //   _handlesNewRound();
+              // });
+            }
+
+             if (state.theyPoint >= 12) {
+              bloc.dispatch(TheyRound());
+              bloc.dispatch(NewMatch());
+              // WidgetsBinding.instance.addPostFrameCallback((_){
+              //   _handlesNewRound();
+              // });
+            }
+
             return Container(
               color: Colors.green[600],
               child: Column(
@@ -49,9 +67,9 @@ class _GameScrenState extends State<GameScreen>{
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
 
-                        _ourRounds(),
+                        _round(state.ourRounds.toString()),
                         Text('Rodadas', style: TextStyle(color: Colors.white70),),
-                        _theyRounds(),
+                        _round(state.theyRounds.toString()),
 
                       ],
                     ),
@@ -63,29 +81,29 @@ class _GameScrenState extends State<GameScreen>{
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         
-                        _ourPoint(),
+                        _point(state.ourPoint.toString()),
                         Text('x', style: TextStyle(color: Colors.white, fontSize: 70.0),),
-                        _theyPoint(),
+                        _point(state.theyPoint.toString()),
                       
                       ],
                     ),
                   ),
 
                   Expanded(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: <Widget>[
-                          
-                          _ourButtons(),
-                          _matches(bloc),
-                          _theyButtons(),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: <Widget>[
+                        
+                        _ourButtons(bloc),
+                        _plays(bloc),
+                        _theyButtons(bloc),
 
-                        ],
-                      ),
+                      ],
+                    ),
                   ),
 
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
@@ -96,7 +114,7 @@ class _GameScrenState extends State<GameScreen>{
                         ),
 
                         RaisedButton(
-                          onPressed: () => bloc.dispatch(BackMatch()),
+                          onPressed: () => bloc.dispatch(BackPlay()),
                           child: Text('Voltar Jogada'),
                         ),
                       
@@ -123,15 +141,25 @@ class _GameScrenState extends State<GameScreen>{
   Future<void> _handlesNewRound() {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Título Teste'),
-          content: Text('Body Teste'),
+          title: Text('Vitória!', textAlign: TextAlign.center),
+          content: Row(
+            children: <Widget>[
+              Text(
+                '${bloc.currentState.ourRounds.toString()} x ${bloc.currentState.theyRounds.toString()}',
+                textAlign: TextAlign.center
+              ),
+            ]
+          ),
           actions: <Widget>[
             FlatButton(
-              child: Text('Button'),
-              onPressed: () => bloc.dispatch(OurRound()),
+              child: Text('Nova Partida'),
+              onPressed: () {
+                bloc.dispatch(NewMatch());
+                Navigator.of(context).pop();
+              },
             ),
           ],
         );
@@ -139,111 +167,91 @@ class _GameScrenState extends State<GameScreen>{
     );
   }
 
-  Widget _ourRounds() {
-    return BlocBuilder<GameEvent, GameState>(
-      bloc: bloc,
-      builder: (BuildContext context, GameState state) {
-
-        if (bloc.currentState.ourPoint >= 12) {
-          bloc.dispatch(OurRound());        
-        }
-
-        return Text(
-          state.ourRounds.toString(),
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        );
-      },
+  Widget _round(String round) {
+    return Text(
+      round,
+      style: TextStyle(
+        color: Colors.white,
+      ),
     );
   }
 
-  Widget _theyRounds() {
-    return BlocBuilder<GameEvent, GameState>(
-      bloc: bloc,
-      builder: (BuildContext context, GameState state) {
-
-        if (bloc.currentState.theyPoint >= 12) {      
-          bloc.dispatch(TheyRound());
-        }
-
-        return Text(
-          state.theyRounds.toString(),
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        );
-      },
+  Widget _point(String point) {
+    return Text(
+      point,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 100.0,
+      ),
     );
   }
 
-  Widget _ourPoint() {
-    return BlocBuilder<GameEvent, GameState>(
-      bloc: bloc,
-      builder: (BuildContext context, GameState state) {
-        return Text(
-          state.ourPoint.toString(),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 100.0,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _theyPoint() {
-    return BlocBuilder<GameEvent, GameState>(
-      bloc: bloc,
-      builder: (BuildContext context, GameState state) {
-        return Text(
-          state.theyPoint.toString(),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 100.0,
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _button(String title, GameEvent event) {
+  Widget _button(String title, GameBloc bloc, GameEvent event) {
     return FloatingActionButton(
       heroTag: null,
-      onPressed: () => bloc.dispatch(event),
+      onPressed: () {
+
+        int ourPoint = bloc.currentState.ourPoint;
+        int theyPoint = bloc.currentState.theyPoint;
+
+        if (event is OurMoreOne && ourPoint < 11 && theyPoint < 11) {
+          bloc.dispatch(event);
+        }
+        if (event is OurMoreThree && ourPoint < 12 && theyPoint < 12) {
+          bloc.dispatch(event);
+        }
+        if (event is OurMoreSix && ourPoint < 11 && theyPoint < 11) {
+          bloc.dispatch(event);
+        }
+        if (event is OurMoreNine && ourPoint < 11 && theyPoint < 11) {
+          bloc.dispatch(event);
+        }
+        if (event is TheyMoreOne && theyPoint < 11 && ourPoint < 11) {
+          bloc.dispatch(event);
+        }
+        if (event is TheyMoreThree && theyPoint < 12 && ourPoint < 12) {
+          bloc.dispatch(event);
+        }
+        if (event is TheyMoreSix && theyPoint < 11 && ourPoint < 11) {
+          bloc.dispatch(event);
+        }
+        if (event is TheyMoreNine && theyPoint < 11 && ourPoint < 11) {
+          bloc.dispatch(event);
+        }        
+      },
       child: Text(title, style: TextStyle(fontSize: 18),),
     );
   }
 
-  Widget _ourButtons() {
+  Widget _ourButtons(GameBloc bloc) {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _button('+1', OurMoreOne()),
-          _button('+3', OurMoreThree()),
-          _button('+6', OurMoreSix()),
-          _button('+9', OurMoreNine()),
+          _button('+1', bloc, OurMoreOne()),
+          _button('+3', bloc, OurMoreThree()),
+          _button('+6', bloc, OurMoreSix()),
+          _button('+9', bloc, OurMoreNine()),
         ], 
       ),
     );
   }
 
-  Widget _theyButtons() {
+  Widget _theyButtons(GameBloc bloc) {
     return Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _button('+1', TheyMoreOne()),
-          _button('+3', TheyMoreThree()),
-          _button('+6', TheyMoreSix()),
-          _button('+9', TheyMoreNine()),
+          _button('+1', bloc, TheyMoreOne()),
+          _button('+3', bloc, TheyMoreThree()),
+          _button('+6', bloc, TheyMoreSix()),
+          _button('+9', bloc, TheyMoreNine()),
         ], 
       ),
     );
   }
 
-  Widget _matches(GameBloc bloc) {
+  Widget _plays(GameBloc bloc) {
     return Expanded(
       child: Column(
         children: <Widget>[
