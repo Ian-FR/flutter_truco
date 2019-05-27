@@ -43,10 +43,6 @@ class _InitializationScreenState extends State<InitializationScreen>{
                   });
                 }
                 return CircularProgressIndicator(backgroundColor: Colors.white);
-                // Text(
-                //   'Inicializando ... ${state.progress}%',
-                //   style: TextStyle(color: Colors.white),
-                // );
               }
             ),
           ),
