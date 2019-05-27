@@ -9,9 +9,14 @@ class NewGame extends GameEvent {
   String toString() => 'NewGame';
 }
 
-class BackMatch extends GameEvent {
+class NewMatch extends GameEvent {
   @override
-  String toString() => 'BackMatch';
+  String toString() => 'NewMatch';
+}
+
+class BackPlay extends GameEvent {
+  @override
+  String toString() => 'BackPlay';
 }
 
 class OurRound extends GameEvent {
