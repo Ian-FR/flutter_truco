@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:truco/blocs/game/game.dart';
 
@@ -40,21 +41,10 @@ class _GameScrenState extends State<GameScreen>{
           bloc: bloc,
           builder: (BuildContext context, GameState state) {
 
-            if (state.ourPoint >= 12) {
-              
-              bloc.dispatch(OurRound());
-              bloc.dispatch(NewMatch());
-              // WidgetsBinding.instance.addPostFrameCallback((_){
-              //   _handlesNewRound();
-              // });
-            }
-
-             if (state.theyPoint >= 12) {
-              bloc.dispatch(TheyRound());
-              bloc.dispatch(NewMatch());
-              // WidgetsBinding.instance.addPostFrameCallback((_){
-              //   _handlesNewRound();
-              // });
+            if (bloc.currentState.ourPoint > 11 || bloc.currentState.theyPoint > 11) {
+              WidgetsBinding.instance.addPostFrameCallback((_){
+                _newRoundDialog();
+              });
             }
 
             return Container(
@@ -138,20 +128,20 @@ class _GameScrenState extends State<GameScreen>{
     );
   }
 
-  Future<void> _handlesNewRound() {
+  Future<void> _newRoundDialog() {
+    
+    if (bloc.currentState.ourPoint >= 12) bloc.dispatch(OurRound());
+    if (bloc.currentState.theyPoint >= 12) bloc.dispatch(TheyRound());
+    
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Vitória!', textAlign: TextAlign.center),
-          content: Row(
-            children: <Widget>[
-              Text(
-                '${bloc.currentState.ourRounds.toString()} x ${bloc.currentState.theyRounds.toString()}',
-                textAlign: TextAlign.center
-              ),
-            ]
+          title: Text('Nós x Eles', textAlign: TextAlign.center),
+          content: Text(
+            '${bloc.currentState.ourRounds.toString()} x ${bloc.currentState.theyRounds.toString()}',
+            textAlign: TextAlign.center,
           ),
           actions: <Widget>[
             FlatButton(
@@ -194,7 +184,7 @@ class _GameScrenState extends State<GameScreen>{
         int ourPoint = bloc.currentState.ourPoint;
         int theyPoint = bloc.currentState.theyPoint;
 
-        if (event is OurMoreOne && ourPoint < 11 && theyPoint < 11) {
+        if (event is OurMoreOne && ourPoint < 12 && theyPoint < 12) {
           bloc.dispatch(event);
         }
         if (event is OurMoreThree && ourPoint < 12 && theyPoint < 12) {
@@ -206,7 +196,7 @@ class _GameScrenState extends State<GameScreen>{
         if (event is OurMoreNine && ourPoint < 11 && theyPoint < 11) {
           bloc.dispatch(event);
         }
-        if (event is TheyMoreOne && theyPoint < 11 && ourPoint < 11) {
+        if (event is TheyMoreOne && theyPoint < 12 && ourPoint < 12) {
           bloc.dispatch(event);
         }
         if (event is TheyMoreThree && theyPoint < 12 && ourPoint < 12) {

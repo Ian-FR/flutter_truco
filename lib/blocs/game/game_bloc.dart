@@ -68,8 +68,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield GameState(
       ourPoints: currentState.ourPoints,
       theyPoints: currentState.theyPoints,
-      ourPoint: currentState.ourPoint,
-      theyPoint: currentState.theyPoint,
+      ourPoint: 0,
+      theyPoint: 0,
       ourRounds: ourRounds + 1,
       theyRounds: currentState.theyRounds,
     );
@@ -81,8 +81,8 @@ class GameBloc extends Bloc<GameEvent, GameState> {
     yield GameState(
       ourPoints: currentState.ourPoints,
       theyPoints: currentState.theyPoints,
-      ourPoint: currentState.ourPoint,
-      theyPoint: currentState.theyPoint,
+      ourPoint: 0,
+      theyPoint: 0,
       ourRounds: currentState.ourRounds,
       theyRounds: theyRounds + 1,
     );
