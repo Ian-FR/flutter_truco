@@ -99,10 +99,9 @@ class _GameScrenState extends State<GameScreen>{
                       children: <Widget>[
 
                         RaisedButton(
-                          onPressed: () => bloc.dispatch(NewGame()),
+                          onPressed: () => _newGameDialog(),
                           child: Text('Novo Jogo'),
                         ),
-
                         RaisedButton(
                           onPressed: () => bloc.dispatch(BackPlay()),
                           child: Text('Voltar Jogada'),
@@ -148,6 +147,37 @@ class _GameScrenState extends State<GameScreen>{
               child: Text('Nova Partida'),
               onPressed: () {
                 bloc.dispatch(NewMatch());
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _newGameDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Novo Jogo', textAlign: TextAlign.center),
+          content: Text(
+            'Confirmar o início de um novo jogo?',
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Não'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Sim'),
+              onPressed: () {
+                bloc.dispatch(NewGame());
                 Navigator.of(context).pop();
               },
             ),
